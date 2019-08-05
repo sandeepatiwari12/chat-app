@@ -1,0 +1,19 @@
+{
+  "name": "chat-app-server",
+  "version": "1.0.0",
+  "description": "this is the server side codebase for chat app using MEAN ",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sandeepatiwari12/MEAN-chat-app.git"
+  },
+  "author": "Sandeep Tiwari",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sandeepatiwari12/MEAN-chat-app/issues"
+  },
+  "homepage": "https://github.com/sandeepatiwari12/MEAN-chat-app#readme"
+}
