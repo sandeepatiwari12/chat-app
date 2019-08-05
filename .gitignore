@@ -9,6 +9,9 @@
 # Only exists if Bazel was run
 /bazel-out
 
+# for vscode
+.vscode
+
 
 # dependencies
 **/node_modules
