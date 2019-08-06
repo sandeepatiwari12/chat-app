@@ -15,5 +15,11 @@
   "bugs": {
     "url": "https://github.com/sandeepatiwari12/MEAN-chat-app/issues"
   },
-  "homepage": "https://github.com/sandeepatiwari12/MEAN-chat-app#readme"
+  "homepage": "https://github.com/sandeepatiwari12/MEAN-chat-app#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "socket.io": "^2.2.0",
+    "uuid": "^3.3.2"
+  }
 }

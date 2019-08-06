@@ -1,0 +1,13 @@
+.signup-form {
+  max-width: 500px;
+  margin: 10% auto;
+  .ta-c {
+      text-align: center;
+    button {
+      &.mat-stroked-button {
+        width: 100%;
+        line-height: 50px;
+      }
+    }
+  }
+}

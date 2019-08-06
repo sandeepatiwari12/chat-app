@@ -1,0 +1,29 @@
+<div class="row home">
+    <div class="col-12">
+        <div class="container">
+            <div class="row">
+                <h3 class="col-12 pt-10">Messaging</h3>
+                <div class="col-7">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Select Room</mat-label>
+                        <mat-select placeholder="Select Chat Room" (selectionChange)="onChange($event.value)"
+                            [(ngModel)]="chatRoom" #filterSelect="ngModel">
+                            <mat-option *ngFor="let room of chatRooms" [value]="room.value">{{room.name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-5 button-align">
+                    <button mat-stroked-button color="warn" (click)="logout()">
+                        <mat-icon>exit_to_app</mat-icon>
+                        Logout</button>
+                </div>
+            </div>
+            <div class="messaging">
+                <div class="inbox_msg">
+                    <app-user-list [usersList]="users"></app-user-list>
+                    <app-chats [chatList]="chatList" (onSentMessage)="getSentMessage($event)"></app-chats>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

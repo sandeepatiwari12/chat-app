@@ -6,6 +6,7 @@
 /out-tsc
 **/.document
 **/package-lock.json
+chat-app-client/package-lock.json
 # Only exists if Bazel was run
 /bazel-out
 
