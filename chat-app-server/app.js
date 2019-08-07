@@ -5,6 +5,9 @@ var app = express();
 var http = require("http");
 var server = http.createServer(app);
 
+// 
+app.use(cors());
+app.use(express.json());
 
 var PORT = process.env.PORT || 3000;
 
@@ -42,15 +45,13 @@ io.on("connection", socket => {
    socket.on("update_username", data => {
     console.log('the user has sent to inform all ======>', data)
     socket.in(data.room).broadcast.emit("get_user_update", {
-      message: `${data.oldusername + ' Has Changed Name to ' + data.username}`,
+      message: `${data.oldusername + ' has changed name to ' + data.username}`,
       type: 'user_update'
     });
   });
 });
 
 
-app.use(cors());
-app.use(express.json());
 const usersRouter = require('./routes/user/user.route');
 const chatRouter = require('./routes/chats/chats.route')
 app.use('/api/user', usersRouter);
