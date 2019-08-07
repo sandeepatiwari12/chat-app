@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { AuthGuard } from './components/shared/auth.gaurd.service';
+
 
 
 const routes: Routes = [
@@ -18,12 +20,14 @@ const routes: Routes = [
   },
   {
     path: 'chats',
+    canActivate: [AuthGuard],
     loadChildren: '../app/components/home/home.module#HomeModule'
   }
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers: [AuthGuard]
 })
 export class AppRoutingModule { }

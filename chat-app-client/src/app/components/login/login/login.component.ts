@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoginService } from '../login.service';
-import { StorageMap } from '@ngx-pwa/local-storage';
 import { MatSnackBar } from '@angular/material';
 
 @Component({
@@ -15,30 +14,18 @@ export class LoginComponent implements OnInit {
     allUsers: any;
 
     constructor(
-        private storageMap: StorageMap,
         private router: Router,
         private loginService: LoginService,
         private snackbar: MatSnackBar) {
-            this.getAlltheUsers();
          }
 
     ngOnInit() { }
-
-    getAlltheUsers() {
-        this.storageMap.get('users').subscribe((users) => {
-            this.allUsers = users;
-        });
-    }
     login() {
-        this.loginObj.allUsers = this.allUsers;
         this.loginService.login(this.loginObj).subscribe((res) => {
-            console.log('response after login', res);
             if(res && res.status == 'ok') {
-
-                this.storageMap.set('loggedInUser', res.data).subscribe(() => {
                     this.showError(res.message, 'Got it');
+                    localStorage.setItem('loggedInUser', JSON.stringify(res.data));
                     this.router.navigate(['/chats']);
-                });
             } else {
                 this.showError(res.message, res.status)
             }

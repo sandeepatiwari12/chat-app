@@ -1,16 +1,15 @@
 import { Injectable } from "@angular/core";
 import * as io from "socket.io-client";
 import { Observable } from "rxjs";
-import { LocalStorage, StorageMap } from '@ngx-pwa/local-storage';
-import { environment } from 'src/environments/environment';
+import { APIService } from 'src/app/components/shared/global.api.settings.service';
+
 @Injectable({
   providedIn: "root"
 })
 export class SocketService {
-  private socket = io(environment.API_URL);
-  constructor(private localStorage: LocalStorage,
-              private storageMap: StorageMap
-    ) {
+  private socket = io(this.apiService.getApiUrl());
+  constructor(
+    private apiService: APIService ) {
     }
 
   joinRoom(postObj) {
@@ -39,6 +38,18 @@ export class SocketService {
       username: postObj.username,
       message: postObj.message,
       room: postObj.room
+    });
+  }
+
+  updateUsername(postObj) {
+    this.socket.emit('update_username', postObj)
+  }
+
+  informToAll() {
+    return new Observable(observer => {
+      this.socket.on("get_user_update", data => {
+        observer.next(data);
+      });
     });
   }
 }

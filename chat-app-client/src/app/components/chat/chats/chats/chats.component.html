@@ -1,35 +1,45 @@
 <div class="mesgs app-chats">
     <div class="msg_history">
         <ng-container *ngIf="chatList && chatList.length > 0">
-        <ng-container *ngFor="let chat of chatList">
-
-        <ng-container *ngIf="userDetails.username !== chat.username">
-        
-        <div class="incoming_msg">
-            <div class="incoming_msg_img">
-                <mat-icon color="primary">person</mat-icon>
-            </div>
-            <div class="received_msg">
-                <div class="received_withd_msg">
-                    <p>{{chat.message}}</p>
-                    <span class="time_date">{{chat.date | date: 'mediumDate'}}</span>
-                </div>
-            </div>
-        </div>
+            <ng-container *ngFor="let chat of chatList">
+                <ng-container *ngIf="chat.type == 'new_joinee'">
+                    <p class="new-joinee"><strong>{{chat.username}}:&nbsp;&nbsp;</strong>
+                        {{chat.message}} <strong>{{chat.room}}</strong></p>
+                </ng-container>
+                <ng-container *ngIf="chat.type == 'user_update'">
+                    <p class="new-joinee">{{chat.message}}</p>
+                </ng-container>
+                <ng-container *ngIf="!(['new_joinee', 'user_update']).includes(chat.type)">
+                    <!-- for recieved message -->
+                    <ng-container *ngIf="userDetails">
+                        <ng-container *ngIf="userDetails.email !== chat.email">
+                            <div class="incoming_msg">
+                                <div class="incoming_msg_img">
+                                    <mat-icon color="primary">person</mat-icon>
+                                </div>
+                                <div class="received_msg">
+                                    <div class="received_withd_msg">
+                                        <p><strong>{{chat.username}}:&nbsp;&nbsp;</strong>
+                                            {{chat.message}}</p>
+                                        <span class="time_date">{{chat.date | date: 'mediumDate'}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
+                        <!-- for sent message -->
+                        <ng-container *ngIf="userDetails.email === chat.email">
+                            <div class="outgoing_msg">
+                                <div class="sent_msg">
+                                    <p><strong>{{'You'}}:&nbsp;&nbsp;</strong>
+                                        {{chat.message}}</p>
+                                    <span class="time_date">{{chat.date | date: 'mediumDate'}}</span>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </ng-container>
+                </ng-container>
+            </ng-container>
         </ng-container>
-
-        <ng-container *ngIf="userDetails.username === chat.username">
-
-        <div class="outgoing_msg">
-            <div class="sent_msg">
-                <p>{{chat.message}}</p>
-                <span class="time_date">{{chat.date | date: 'mediumDate'}}</span>
-            </div>
-        </div>
-        </ng-container>
-
-    </ng-container>
-</ng-container>
     </div>
     <div class="type_msg">
         <div class="input_msg_write">

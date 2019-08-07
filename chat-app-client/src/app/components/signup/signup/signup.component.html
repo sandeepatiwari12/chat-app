@@ -4,23 +4,27 @@
             <mat-card-title>Create User</mat-card-title>
         </mat-card-header>
         <mat-card-content>
-            <mat-form-field appearance="outline">
-                <mat-label>Name</mat-label>
-                <input type="text" matInput placeholder="Enter Full Name" [(ngModel)]="signupObj.username" name="username" autocomplete="false"
-                    autofocus="true">
-            </mat-form-field>
-            <mat-form-field appearance="outline">
-                <mat-label>Email</mat-label>
-                <input type="text" matInput placeholder="Enater Email ID" [(ngModel)]="signupObj.email" name="email" autocomplete="false"
-                    autofocus="true">
-            </mat-form-field>
-            <mat-form-field appearance="outline">
+            <form #signUpForm="ngForm">
+                <mat-form-field appearance="outline">
+                    <mat-label>Name</mat-label>
+                    <input type="text" matInput placeholder="Enter Full Name" [(ngModel)]="signupObj.username"
+                        name="username" autocomplete="false" autofocus="true" required>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Email</mat-label>
+                    <input type="email" matInput placeholder="Enater Email ID" [(ngModel)]="signupObj.email"
+                        name="email" autocomplete="false" autofocus="true" required>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
                     <mat-label>Password</mat-label>
-                <input type="password" matInput placeholder="Create Password" [(ngModel)]="signupObj.password" name="password" autocomplete="false">
-            </mat-form-field>
+                    <input type="password" matInput placeholder="Create Password" [(ngModel)]="signupObj.password"
+                        name="password" autocomplete="false" required>
+                </mat-form-field>
+                <div class="ta-c">
+                    <button mat-raised-button color="primary" (click)="signup()" [disabled]="signUpForm.invalid">Sign
+                        up</button>
+                </div>
+            </form>
         </mat-card-content>
-        <mat-card-actions class="ta-c">
-            <button mat-stroked-button color="primary" (click)="signup()">Sign up</button>
-        </mat-card-actions>
     </mat-card>
 </div>

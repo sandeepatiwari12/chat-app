@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { StorageMap } from '@ngx-pwa/local-storage';
 import { Router } from '@angular/router';
-import { SignUpService } from '../signup.service';
 import { MatSnackBar } from '@angular/material';
+import { LoginService } from '../../login/login.service';
 
 @Component({
     selector: 'app-signup',
@@ -14,28 +13,18 @@ export class SignUpComponent implements OnInit {
     signupObj: any = {}
     allUsers: any;
     constructor(
-            private storageMap: StorageMap,
             private router: Router,
-            private signUpService: SignUpService,
+            private loginServise: LoginService,
             private snackbar: MatSnackBar
     ) {
-        this.getAlltheUsers();
      }
 
     ngOnInit() {}
-    getAlltheUsers() {
-        this.storageMap.get('users').subscribe((users) => {
-            this.allUsers = users;
-        });
-    }
     signup() {
-        this.signupObj.allUsers = JSON.stringify(this.allUsers);
-        this.signUpService.creareUser(this.signupObj).subscribe((res) => {
+        this.loginServise.creareUser(this.signupObj).subscribe((res) => {
             if(res && res.status == 'ok') {
-                this.storageMap.set('users', res.data).subscribe(() => {
                     this.showError('New user added succesfully', 'Got it');
                     this.router.navigate(['/login'])
-                });
             } else {
                 this.showError(res.message, res.status);
             }

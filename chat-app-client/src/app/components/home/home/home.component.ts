@@ -1,96 +1,124 @@
-import { Component, OnInit } from '@angular/core';
-import { SocketService } from '../../chat/chat.ervices/socket-service/socket.service';
-import { MatSnackBar } from '@angular/material';
-import { StorageMap } from '@ngx-pwa/local-storage';
-import { Router } from '@angular/router';
+import { Component, OnInit } from "@angular/core";
+import { SocketService } from "../../chat/chat.ervices/socket-service/socket.service";
+import { MatSnackBar } from "@angular/material";
+import { StorageMap } from "@ngx-pwa/local-storage";
+import { Router } from "@angular/router";
+import { ChatService } from "../../chat/chats/chat.service";
+import { LoginService } from "../../login/login.service";
 
 @Component({
-    selector: 'app-home',
-    templateUrl: 'home.component.html',
-    styleUrls: ['home.component.scss']
+  selector: "app-home",
+  templateUrl: "home.component.html",
+  styleUrls: ["home.component.scss"]
 })
-
 export class HomeComponent implements OnInit {
-    userDetails: any;
-    chatRoom: any;
-    users: any = [];
-    chatList: any = [];
-    chatRooms: any = [
-        {
-            name: 'Frontend Technology',
-            value: 'frontend'
-        },
-        {
-            name: 'Server Technology',
-            value: 'server'
-        },
-        {
-            name: 'DevOps Technology',
-            value: 'devops'
-        }
-    ]
-    constructor(
-        private socketService: SocketService,
-        private snackbar: MatSnackBar,
-        private storageMap: StorageMap,
-        private router: Router
-    ) {
-        this.getLoggedInUser();
-     }
-
-    ngOnInit() { 
-        this.getNewJoinee();
-        this.getNewMessage();
+  userDetails: any;
+  chatRoom: any;
+  chatList: any = [];
+  chatRooms: any = [
+    {
+      name: "Frontend Technology",
+      value: "frontend"
+    },
+    {
+      name: "Server Technology",
+      value: "server"
+    },
+    {
+      name: "DevOps Technology",
+      value: "devops"
     }
+  ];
+  newUserName: any;
+  constructor(
+    private socketService: SocketService,
+    private snackbar: MatSnackBar,
+    private storageMap: StorageMap,
+    private router: Router,
+    private chatService: ChatService,
+    private loginService: LoginService
+  ) {
+    this.getLoggedInUser();
+  }
 
-    getLoggedInUser() {
-        this.storageMap.get('loggedInUser').subscribe((users) => {
-            this.userDetails = users;
+  ngOnInit() {
+    this.getNewJoinee();
+    this.getPrevMsg();
+    this.getNewMessage();
+  }
+
+  getLoggedInUser() {
+    this.userDetails = JSON.parse(localStorage.getItem("loggedInUser"));
+    if (this.userDetails && this.userDetails.room) {
+      this.chatRoom = this.userDetails.room;
+      this.onChange();
+    }
+    this.storageMap.get("chats").subscribe((chats: any) => {
+      if (chats && chats.length > 0) {
+        chats.forEach(chat => {
+          this.chatList.push(chat);
         });
-    }
+      }
+    });
+  }
 
-    onChange(e) {
-        const postBody = {
-            username: this.userDetails.username,
-            room: e
-        }
-        sessionStorage.setItem('sessionUser', JSON.stringify(postBody))
-        this.socketService.joinRoom(postBody)
-    }
-    getNewJoinee() {
-        this.socketService.getNewJoinee().subscribe((res: any) => {
-            this.users.push(res);
-            this.snackbar.open(res.message, res.room, {duration: 4000})
-
-        }, (err) => {
-            this.showErrorMessage('something went wrong', 'ok');
-            console.log('something went wrong', err);
+  onChange(e?: any) {
+    this.userDetails.room = this.chatRoom;
+    localStorage.setItem("loggedInUser", JSON.stringify(this.userDetails));
+    this.socketService.joinRoom(this.userDetails);
+  }
+  getNewJoinee() {
+    this.socketService.getNewJoinee().subscribe(
+      (res: any) => {
+        this.chatList.push(res);
+      },
+      err => {
+        this.showErrorMessage("something went wrong", "ok");
+        console.log("something went wrong", err);
+      }
+    );
+  }
+  getNewMessage() {
+    this.socketService.getNewMessage().subscribe((res: any) => {
+      this.chatList.push(res);
+    });
+  }
+  getLastMessage(chat) {
+    this.chatList.push(chat);
+  }
+  getPrevMsg() {
+    this.chatService.getAllChats().subscribe((res: any) => {
+      if (res && res.data) {
+        res.data.forEach(chat => {
+          this.chatList.push(chat);
         });
-    }
-    getNewMessage() {
-        console.log('inside get new  message', event)
-        this.socketService.getNewMessage().subscribe((res: any) => {
-            console.log('the server response is chatList ', res);
-            this.chatList.push(res);
-            this.showErrorMessage(res.message, res.username)
-
-        }, (err) => {
-            this.showErrorMessage('something went wrong', 'ok');
-            console.log('something went wrong', err);
-        });
-    }
-    getSentMessage(event) {
-        this.chatList.push(event);
-        // this.getNewMessage();
-
-    }
-    showErrorMessage(msg1, msg2) {
-        this.snackbar.open(msg1, msg2, {duration: 4000})
-    }
-    logout() {
-        this.storageMap.clear().subscribe(() => {
-            this.showErrorMessage('You have logged out succesfully... Note: All the data has been deleted from store', 'Got it');
-            this.router.navigate(['/login'])
-        })
-    }
+      }
+    });
+  }
+  showErrorMessage(msg1, msg2) {
+    this.snackbar.open(msg1, msg2, { duration: 4000 });
+  }
+  updateUser() {
+    this.userDetails.newUserName = this.newUserName;
+    this.userDetails.room = this.chatRoom;
+    this.loginService.updateUser(this.userDetails).subscribe((res: any) => {
+      if (res && res.status == "ok") {
+        this.socketService.updateUsername(res.data);
+        this.userDetails = res.data;
+        localStorage.setItem("loggedInUser", JSON.stringify(res.data));
+        this.informAll();
+      }
+    });
+  }
+  informAll() {
+    this.socketService.informToAll().subscribe((response: any) => {
+      console.log('this is the service for inform to all', response)
+      this.chatList.push(response);
+    });
+  }
+  logout() {
+    this.showErrorMessage("You have logged out succesfully...", "Got it");
+    this.router.navigate(["/login"]);
+    localStorage.clear();
+  }
 }

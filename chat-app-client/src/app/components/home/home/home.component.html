@@ -3,7 +3,7 @@
         <div class="container">
             <div class="row">
                 <h3 class="col-12 pt-10">Messaging</h3>
-                <div class="col-7">
+                <div class="col-5">
                     <mat-form-field appearance="outline">
                         <mat-label>Select Room</mat-label>
                         <mat-select placeholder="Select Chat Room" (selectionChange)="onChange($event.value)"
@@ -12,18 +12,43 @@
                         </mat-select>
                     </mat-form-field>
                 </div>
-                <div class="col-5 button-align">
+                <div class="col-7 button-align">
+                    <h5 data-toggle="modal" data-target="#updateModal"> Welcome {{userDetails.username}}</h5>
                     <button mat-stroked-button color="warn" (click)="logout()">
                         <mat-icon>exit_to_app</mat-icon>
-                        Logout</button>
+                        Logout
+                    </button>
                 </div>
             </div>
             <div class="messaging">
                 <div class="inbox_msg">
-                    <app-user-list [usersList]="users"></app-user-list>
-                    <app-chats [chatList]="chatList" (onSentMessage)="getSentMessage($event)"></app-chats>
+                    <app-chats [chatList]="chatList" (onSentMessage)="getLastMessage($event)"></app-chats>
                 </div>
             </div>
         </div>
+    </div>
+</div>
+<!-- Modal -->
+<div id="updateModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Update User Name</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <mat-form-field appearance="outline">
+                    <mat-label>New Username</mat-label>
+                    <input type="text" matInput placeholder="Please enter new username" [(ngModel)]="newUserName">
+                </mat-form-field>
+            </div>
+            <div class="modal-footer">
+                <button type="button" mat-button data-dismiss="modal">Close</button>
+                <button type="button" mat-stroked-button data-dismiss="modal" (click)="updateUser()">Update</button>
+            </div>
+        </div>
+
     </div>
 </div>

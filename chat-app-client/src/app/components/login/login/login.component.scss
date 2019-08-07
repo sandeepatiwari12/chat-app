@@ -1,4 +1,19 @@
 .login-form {
-    max-width: 500px;
-    margin: 10% auto;
+  max-width: 500px;
+  margin: 10% auto;
+  display: flex;
+  .ta-c {
+    text-align: center;
+    button {
+        margin: 1rem 0;
+      &.mat-stroked-button {
+        width: 100%;
+        line-height: 50px;
+      }
+      &.mat-raised-button {
+        width: 100%;
+        line-height: 50px;
+      }
+    }
+  }
 }

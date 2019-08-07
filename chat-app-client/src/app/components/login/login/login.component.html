@@ -4,20 +4,23 @@
             <mat-card-title>Login</mat-card-title>
         </mat-card-header>
         <mat-card-content>
-            <mat-form-field appearance="outline">
-                <mat-label>Email</mat-label>
-                <input type="text" matInput [(ngModel)]="loginObj.email" name="email" autocomplete="false"
-                    autofocus="true">
-            </mat-form-field>
-            <mat-form-field appearance="outline">
-                <mat-label>Password</mat-label>
-                <input type="password" matInput [(ngModel)]="loginObj.password" name="password" autocomplete="false">
-            </mat-form-field>
+            <form #loginForm="ngForm">
+                <mat-form-field appearance="outline">
+                    <mat-label>Email</mat-label>
+                    <input type="email" matInput [(ngModel)]="loginObj.email" name="email" autocomplete="false"
+                        autofocus="true" required>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Password</mat-label>
+                    <input type="password" matInput [(ngModel)]="loginObj.password" name="password"
+                        autocomplete="false" required>
+                </mat-form-field>
+                <div class="ta-c">
+                    <button type="submit" mat-raised-button color="primary" (click)="login()" [disabled]="loginForm.invalid">Login</button>
+                    <button type="button" class="float-right" mat-stroked-button color="accent" (click)="register()">Create New
+                        User</button>
+                </div>
+            </form>
         </mat-card-content>
-        <mat-card-actions class="ta-r">
-            <button mat-stroked-button color="primary" (click)="login()">Login</button>
-
-            <button class="float-right" mat-button color="accent" (click)="register()">Create New User</button>
-        </mat-card-actions>
     </mat-card>
 </div>
