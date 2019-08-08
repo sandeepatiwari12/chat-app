@@ -1,7 +1,7 @@
 # MEAN-chat-app
  This is the ChatRoom web application using Angular8, NodeJs and Express
 
-    #Setps:
+    #Steps:
         ## to run this project follow the steps: 
                 # git clone https://github.com/sandeepatiwari12/MEAN-chat-app.git
                 # cd MEAN-chat-app
