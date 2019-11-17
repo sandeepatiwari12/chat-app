@@ -3,8 +3,8 @@
 
     #Steps:
         ## to run this project follow the steps: 
-                # git clone https://github.com/sandeepatiwari12/MEAN-chat-app.git
-                # cd MEAN-chat-app
+                # git clone https://github.com/sandeepatiwari12/chat-app.git
+                # cd chat-app
                 # to run the client :
                     # cd chat-app-client
                     # npm install
